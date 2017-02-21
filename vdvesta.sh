@@ -22,12 +22,9 @@ fi
 
 clear
 ############################################################
-echo '
-
-	Welcome to VDVESTA, a shell script auto Custom & Install VESTACP for your CentOS Server Release 7 x86_64.
-
-										Thanks you for using!
-
+echo '	Welcome to VDVESTA:
+A shell script auto Custom & Install VESTACP for your CentOS Server Release 7 x86_64.
+								Thanks you for using!
 '
 
 vDDoS_yn=''; File_Manager_yn=''; Zend_opcode_yn=''; Memcached_yn=''; Limit_Hosting_yn='';
