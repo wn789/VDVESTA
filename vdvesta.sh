@@ -125,7 +125,19 @@ fail2ban_yn=n
 fi
 echo 'Install Fail2ban => '$fail2ban_yn''
 
+echo -n 'Enter your hostname ['$IP']: '
+read hostname_i
+if [ "$hostname_i" = "" ]; then
+hostname_i=$IP
+fi
+echo 'Hostname => '$hostname_i''
 
+echo -n 'Enter your Email [admin@'$IP']: '
+read email_i
+if [ "$email_i" = "" ]; then
+email_i='admin@'$IP''
+fi
+echo 'Hostname => '$email_i''
 
 yum -y install nano screen wget curl zip unzip net-tools >/dev/null 2>&1
 #############################################################
@@ -210,7 +222,7 @@ fi
 sed -i "s#%PHP_Server_version%#$PHP_Server_version#g" vst-install.sh
 
 
-bash vst-install.sh $Web_Server_version --vsftpd yes --proftpd no --exim yes --dovecot yes $Spamassassin_Clamav_yn --named yes --iptables yes $fail2ban_yn --mysql yes --postgresql no --remi yes --quota yes --password $password
+bash vst-install.sh $Web_Server_version --vsftpd yes --proftpd no --exim yes --dovecot yes $Spamassassin_Clamav_yn --named yes --iptables yes $fail2ban_yn --mysql yes --postgresql no --remi yes --quota yes --hostname $hostname_i --email $email_i --password $password
 
 
 
