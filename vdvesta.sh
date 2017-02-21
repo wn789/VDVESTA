@@ -207,7 +207,7 @@ if [ "$fail2ban_yn" = "n" ]; then
 fail2ban_yn='--fail2ban no'
 fi
 
-sed -i "s#$PHP_Server_version#%PHP_Server_version%#g" vst-install.sh
+sed -i "s#%PHP_Server_version%#$PHP_Server_version#g" vst-install.sh
 
 
 bash vst-install.sh $Web_Server_version --vsftpd yes --proftpd no --exim yes --dovecot yes $Spamassassin_Clamav_yn --named yes --iptables yes $fail2ban_yn --mysql yes --postgresql no --remi yes --quota yes --password $password
@@ -510,8 +510,8 @@ php -v
 echo '
 =====> Install and Config VDVESTA Done! <=====
  Link VestaCP: https://'$IP':2083 or https://'$IP':8083
-username: admin
-password: '$password'
+	username: admin
+	password: '$password'
 
 Please reboot!
 '
