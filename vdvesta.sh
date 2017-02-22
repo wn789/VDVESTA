@@ -38,6 +38,33 @@ vDDoS_yn=y
 fi
 echo 'vDDoS Proxy Protection install => '$vDDoS_yn''
 
+echo -n 'Which Web Server version you want to install [apache|nginx]: '
+read Web_Server_version
+if [ "$Web_Server_version" != "apache" ] && [ "$Web_Server_version" != "nginx" ]; then
+Web_Server_version=apache
+fi
+echo 'Web Server version => '$Web_Server_version''
+
+echo -n 'Which PHP Server version you want to install [5.4|5.5|5.6|7.0|7.1]: '
+read PHP_Server_version
+if [ "$PHP_Server_version" != "5.4" ] && [ "$PHP_Server_version" != "5.5" ] && [ "$PHP_Server_version" != "5.6" ] && [ "$PHP_Server_version" != "7.0" ] && [ "$PHP_Server_version" != "7.1" ]; then
+PHP_Server_version=7.1
+fi
+echo 'PHP Server version => '$PHP_Server_version''
+
+echo -n 'Would you like auto config PHP [Y|n]: '
+read auto_config_PHP_yn
+if [ "$auto_config_PHP_yn" != "y" ] && [ "$auto_config_PHP_yn" != "n" ]; then
+auto_config_PHP_yn=y
+fi
+echo 'Auto config PHP => '$auto_config_PHP_yn''
+
+echo -n 'Which MariaDB Server version you want to install [5.5|10.0|10.1]: '
+read MariaDB_Server_version
+if [ "$MariaDB_Server_version" != "5.5" ] && [ "$MariaDB_Server_version" != "10.0" ] && [ "$MariaDB_Server_version" != "10.1" ]; then
+MariaDB_Server_version=10.1
+fi
+echo 'MariaDB Server version => '$MariaDB_Server_version''
 
 echo -n 'Would you like +install File Manager [Y|n]: '
 read File_Manager_yn
@@ -82,34 +109,7 @@ change_port_yn=y
 fi
 echo 'Change port VestaCP 8083 to 2083 => '$change_port_yn''
 
-echo -n 'Which Web Server version you want to install [apache|nginx]: '
-read Web_Server_version
-if [ "$Web_Server_version" != "apache" ] && [ "$Web_Server_version" != "nginx" ]; then
-Web_Server_version=apache
-fi
-echo 'Web Server version => '$Web_Server_version''
 
-
-echo -n 'Which PHP Server version you want to install [5.4|5.5|5.6|7.0|7.1]: '
-read PHP_Server_version
-if [ "$PHP_Server_version" != "5.4" ] && [ "$PHP_Server_version" != "5.5" ] && [ "$PHP_Server_version" != "5.6" ] && [ "$PHP_Server_version" != "7.0" ] && [ "$PHP_Server_version" != "7.1" ]; then
-PHP_Server_version=7.1
-fi
-echo 'PHP Server version => '$PHP_Server_version''
-
-echo -n 'Would you like auto config PHP [Y|n]: '
-read auto_config_PHP_yn
-if [ "$auto_config_PHP_yn" != "y" ] && [ "$auto_config_PHP_yn" != "n" ]; then
-auto_config_PHP_yn=y
-fi
-echo 'Auto config PHP => '$auto_config_PHP_yn''
-
-echo -n 'Which MariaDB Server version you want to install [5.5|10.0|10.1]: '
-read MariaDB_Server_version
-if [ "$MariaDB_Server_version" != "5.5" ] && [ "$MariaDB_Server_version" != "10.0" ] && [ "$MariaDB_Server_version" != "10.1" ]; then
-MariaDB_Server_version=10.1
-fi
-echo 'MariaDB Server version => '$MariaDB_Server_version''
 
 echo -n 'Would you like +install Spamassassin & Clamav [y|N]: '
 read Spamassassin_Clamav_yn
@@ -125,35 +125,28 @@ fail2ban_yn=n
 fi
 echo 'Install Fail2ban => '$fail2ban_yn''
 
-echo -n 'Enter your hostname ['$IP']: '
+hostname_set="vdvesta.`hostname -f`.local"
+echo -n 'Enter your hostname ['$hostname_set']: '
 read hostname_i
 if [ "$hostname_i" = "" ]; then
-hostname_i=$IP
+hostname_i=$hostname_set
 fi
 echo 'Hostname => '$hostname_i''
 
-echo -n 'Enter your Email [admin@'$IP']: '
+echo -n 'Enter your Email [admin@'$hostname_i']: '
 read email_i
 if [ "$email_i" = "" ]; then
-email_i='admin@'$IP''
+email_i='admin@'$hostname_i''
 fi
-echo 'Hostname => '$email_i''
+echo 'Email => '$email_i''
 
 yum -y install nano screen wget curl zip unzip net-tools >/dev/null 2>&1
+yum -y remove httpd* php* mysql* >/dev/null 2>&1
 #############################################################
 
 
 
 
-if [ "$vDDoS_yn" = "y" ]; then
-curl -L https://github.com/duy13/vDDoS-Protection/raw/master/vddos-1.10.2-centos7 -o /usr/bin/vddos
-chmod 700 /usr/bin/vddos
-/usr/bin/vddos help
-/usr/bin/vddos setup
-/usr/bin/vddos autostart
-echo 'default http://0.0.0.0:80    http://'$IP':8080    no    no    no           no
-default https://0.0.0.0:443  https://'$IP':8443  no    no    /vddos/ssl/your-domain.com.pri /vddos/ssl/your-domain.com.crt' >> /vddos/conf.d/website.conf
-fi
 
 
 if [ "$PHP_Server_version" != "" ]; then
@@ -196,7 +189,7 @@ fi
 
 ############################################################
 
-curl -L https://github.com/duy13/VDVESTA/raw/master/vst-install.sh -o vst-install.sh
+curl -L http://1.voduy.com/VDVESTA/vst-install.sh -o vst-install.sh
 chmod 700 vst-install.sh
 
 
@@ -222,7 +215,7 @@ fi
 sed -i "s#%PHP_Server_version%#$PHP_Server_version#g" vst-install.sh
 
 
-bash vst-install.sh $Web_Server_version --vsftpd yes --proftpd no --exim yes --dovecot yes $Spamassassin_Clamav_yn --named yes --iptables yes $fail2ban_yn --mysql yes --postgresql no --remi yes --quota yes --hostname $hostname_i --email $email_i --password $password
+bash vst-install.sh --force --interactive yes $Web_Server_version --vsftpd yes --proftpd no --exim yes --dovecot yes $Spamassassin_Clamav_yn --named yes --iptables yes $fail2ban_yn --mysql yes --postgresql no --remi yes --quota yes --hostname $hostname_i --email $email_i --password $password
 
 
 
@@ -345,9 +338,43 @@ sed -i "/^memory_limit/c memory_limit = 500M" /etc/php.ini
 sed -i "/^max_execution_time/c max_execution_time = 5000" /etc/php.ini
 fi
 
+if [ "$vDDoS_yn" = "y" ]; then
+s='80' ; r='8080'
+sed -i "s#$s#$r#g" /usr/local/vesta/conf/vesta.conf
+s='443' ; r='8443'
+sed -i "s#$s#$r#g" /usr/local/vesta/conf/vesta.conf
+
+s=':8081' ; r=':8888'
+sed -i "s#$s#$r#g" /etc/httpd/conf.d/*.conf >/dev/null 2>&1
+s=':80' ; r=':8080'
+sed -i "s#$s#$r#g" /etc/httpd/conf.d/*.conf >/dev/null 2>&1
+s=':443' ; r=':8443'
+sed -i "s#$s#$r#g" /etc/httpd/conf.d/*.conf >/dev/null 2>&1
+s=':8888' ; r=':8081'
+sed -i "s#$s#$r#g" /etc/httpd/conf.d/*.conf >/dev/null 2>&1
+
+s=':8084' ; r=':8888'
+sed -i "s#$s#$r#g" /etc/nginx/conf.d/*.conf >/dev/null 2>&1
+s=':80' ; r=':8080'
+sed -i "s#$s#$r#g" /etc/nginx/conf.d/*.conf >/dev/null 2>&1
+s=':443' ; r=':8443'
+sed -i "s#$s#$r#g" /etc/nginx/conf.d/*.conf >/dev/null 2>&1
+s=':8888' ; r=':8084'
+sed -i "s#$s#$r#g" /etc/nginx/conf.d/*.conf >/dev/null 2>&1
+
+service vesta restart
+
+VESTA='/usr/local/vesta/'
+source /etc/profile.d/vesta.sh >/dev/null 2>&1
+source /root/.bash_profile >/dev/null 2>&1
+source /etc/sysconfig/clock >/dev/null 2>&1
+source /usr/local/vesta/func/main.sh >/dev/null 2>&1
+source /usr/local/vesta/conf/vesta.conf >/dev/null 2>&1
+/usr/local/vesta/bin/v-rebuild-web-domains admin
+fi
 
 if [ "$File_Manager_yn" = "y" ]; then
-curl -L https://github.com/duy13/VDVESTA/raw/master/File-Manager -o File-Manager
+curl -L http://1.voduy.com/VDVESTA/File-Manager -o File-Manager
 chmod 700 File-Manager
 ./File-Manager
 rm -f File-Manager
@@ -359,11 +386,18 @@ s='5d5d5d;'
 r='DF0022;'
 sed -i "s#$s#$r#g" /usr/local/vesta/web/css/styles.min.css
 
-/usr/local/vesta/bin/v-delete-cron-job admin 8
+VESTA='/usr/local/vesta/'
+source /etc/profile.d/vesta.sh >/dev/null 2>&1
+source /root/.bash_profile >/dev/null 2>&1
+source /etc/sysconfig/clock >/dev/null 2>&1
+source /usr/local/vesta/func/main.sh >/dev/null 2>&1
+source /usr/local/vesta/conf/vesta.conf >/dev/null 2>&1
 
-/usr/local/vesta/bin/v-delete-user-package gainsboro
-/usr/local/vesta/bin/v-delete-user-package palegreen
-/usr/local/vesta/bin/v-delete-user-package slategrey
+/usr/local/vesta/bin/v-delete-cron-job admin 8 >/dev/null 2>&1
+
+/usr/local/vesta/bin/v-delete-user-package gainsboro >/dev/null 2>&1
+/usr/local/vesta/bin/v-delete-user-package palegreen >/dev/null 2>&1 >/dev/null 2>&1
+/usr/local/vesta/bin/v-delete-user-package slategrey >/dev/null 2>&1
 
 echo "WEB_TEMPLATE='default'
 BACKEND_TEMPLATE='default'
@@ -494,28 +528,39 @@ rm -rf *.pkg
 
 fi
 
+
+
+
 if [ "$vDDoS_yn" = "y" ]; then
-/usr/bin/vddos restart
-sed -i '/80;/a listen 8080;' /usr/local/vesta/nginx/conf/nginx.conf
-sed -i '/443;/a listen 8443;' /usr/local/vesta/nginx/conf/nginx.conf
-sed -i '/80;/a listen 8080;' /etc/nginx/conf.d/*.conf
-service vesta restart
-/usr/local/vesta/bin/v-rebuild-web-domains admin
+curl -L https://github.com/duy13/vDDoS-Protection/raw/master/vddos-1.10.2-centos7 -o /usr/bin/vddos
+chmod 700 /usr/bin/vddos
+/usr/bin/vddos setup
+/usr/bin/vddos autostart
+echo 'default http://0.0.0.0:80    http://'$IP':8080    no    no    no           no
+default https://0.0.0.0:443  https://'$IP':8443  no    no    /vddos/ssl/your-domain.com.pri /vddos/ssl/your-domain.com.crt' >> /vddos/conf.d/website.conf
 fi
 
 
 
 
 /usr/bin/vddos restart >/dev/null 2>&1
-service nginx restart >/dev/null 2>&1
-service httpd restart >/dev/null 2>&1
 service mariadb restart >/dev/null 2>&1
 service memcached restart >/dev/null 2>&1
 service vesta restart >/dev/null 2>&1
-
 clear
-nginx -v
+
+if [ "$Web_Server_version" = "--nginx no --apache yes --phpfpm no" ]; then
+chkconfig nginx off >/dev/null 2>&1
+service httpd restart >/dev/null 2>&1
 httpd -v
+fi
+if [ "$Web_Server_version" = "--nginx yes --apache no --phpfpm yes" ]; then
+chkconfig httpd off >/dev/null 2>&1
+service nginx restart >/dev/null 2>&1
+nginx -v
+fi
+
+
 mysql -V
 php -v
 
@@ -525,5 +570,5 @@ echo '
 	username: admin
 	password: '$password'
 
-Please reboot!
+ Please reboot!
 '

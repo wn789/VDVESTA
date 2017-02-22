@@ -54,7 +54,7 @@ if [ -e '/usr/bin/curl' ]; then
         sed -i "s/php56/php%PHP_Server_version%/g" /etc/yum.repos.d/remi.repo' > tmp.txt
         sed -i '/remi.repo/r tmp.txt' vst-install-$type.sh
         rm -f tmp.txt
-        d='vesta,remi*'; c='vesta,remi-php%PHP_Server_version%'
+        d='vesta,remi*'; c='vesta,remi,remi-php%PHP_Server_version%,mariadb'
         sed -i "s#$d#$c#g" vst-install-$type.sh
         d='mariadb mariadb-server'; c='MariaDB-server MariaDB-client'
         sed -i "s#$d#$c#g" vst-install-$type.sh
