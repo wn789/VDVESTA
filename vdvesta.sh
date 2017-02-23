@@ -189,7 +189,7 @@ fi
 
 ############################################################
 
-curl -L http://1.voduy.com/VDVESTA/vst-install.sh -o vst-install.sh
+curl -L https://github.com/duy13/VDVESTA/raw/master/vst-install.sh -o vst-install.sh
 chmod 700 vst-install.sh
 
 
@@ -374,7 +374,7 @@ source /usr/local/vesta/conf/vesta.conf >/dev/null 2>&1
 fi
 
 if [ "$File_Manager_yn" = "y" ]; then
-curl -L http://1.voduy.com/VDVESTA/File-Manager -o File-Manager
+curl -L https://github.com/duy13/VDVESTA/raw/master/File-Manager -o File-Manager
 chmod 700 File-Manager
 ./File-Manager
 rm -f File-Manager
