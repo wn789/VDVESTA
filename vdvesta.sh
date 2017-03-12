@@ -154,7 +154,7 @@ PHP_Server_version=`echo $PHP_Server_version |tr -d .`
 fi
 
 if [ "$MariaDB_Server_version" = "5.5" ]; then
-
+MariaDB_Server_version='5.5'
 fi
 
 if [ "$MariaDB_Server_version" = "10.0" ]; then
