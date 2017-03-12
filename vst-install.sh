@@ -56,8 +56,11 @@ if [ -e '/usr/bin/curl' ]; then
         rm -f tmp.txt
         d='vesta,remi*'; c='vesta,remi,remi-php%PHP_Server_version%,mariadb'
         sed -i "s#$d#$c#g" vst-install-$type.sh
-        d='mariadb mariadb-server'; c='MariaDB-server MariaDB-client'
-        sed -i "s#$d#$c#g" vst-install-$type.sh
+        MariaDB_Server_version='%MariaDB_Server_version%'
+        if [ "$MariaDB_Server_version" != "5.5" ]; then
+            d='mariadb mariadb-server'; c='MariaDB-server MariaDB-client'
+            sed -i "s#$d#$c#g" vst-install-$type.sh
+        fi
         bash vst-install-$type.sh $*
         exit
     else

@@ -156,13 +156,13 @@ fi
 
 
 if [ "$MariaDB_Server_version" = "5.5" ]; then
-echo '# MariaDB 5.5 CentOS repository list - created 2017-02-20 12:32 UTC
-# http://downloads.mariadb.org/mariadb/repositories/
-[mariadb]
-name = MariaDB
-baseurl = http://yum.mariadb.org/5.5/centos7-amd64
-gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
-gpgcheck=1' > /etc/yum.repos.d/MariaDB.repo
+#echo '# MariaDB 5.5 CentOS repository list - created 2017-02-20 12:32 UTC
+## http://downloads.mariadb.org/mariadb/repositories/
+#[mariadb]
+#name = MariaDB
+#baseurl = http://yum.mariadb.org/5.5/centos7-amd64
+#gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
+#gpgcheck=1' > /etc/yum.repos.d/MariaDB.repo
 fi
 
 if [ "$MariaDB_Server_version" = "10.0" ]; then
@@ -213,7 +213,7 @@ fail2ban_yn='--fail2ban no'
 fi
 
 sed -i "s#%PHP_Server_version%#$PHP_Server_version#g" vst-install.sh
-
+sed -i "s#%MariaDB_Server_version%#$MariaDB_Server_version#g" vst-install.sh
 
 bash vst-install.sh --force --interactive yes $Web_Server_version --vsftpd yes --proftpd no --exim yes --dovecot yes $Spamassassin_Clamav_yn --named yes --iptables yes $fail2ban_yn --mysql yes --postgresql no --remi yes --quota yes --hostname $hostname_i --email $email_i --password $password
 
