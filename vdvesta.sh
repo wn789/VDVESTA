@@ -153,6 +153,12 @@ if [ "$PHP_Server_version" != "" ]; then
 PHP_Server_version=`echo $PHP_Server_version |tr -d .`
 fi
 
+Remi_yn='--remi yes'
+if [ "$PHP_Server_version" = "54" ]; then
+Remi_yn='--remi no'
+fi
+
+
 if [ "$MariaDB_Server_version" = "5.5" ]; then
 MariaDB_Server_version='5.5'
 fi
@@ -207,7 +213,7 @@ fi
 sed -i "s#%PHP_Server_version%#$PHP_Server_version#g" vst-install.sh
 sed -i "s#%MariaDB_Server_version%#$MariaDB_Server_version#g" vst-install.sh
 
-bash vst-install.sh --force --interactive yes $Web_Server_version --vsftpd yes --proftpd no --exim yes --dovecot yes $Spamassassin_Clamav_yn --named yes --iptables yes $fail2ban_yn --mysql yes --postgresql no --remi yes --quota yes --hostname $hostname_i --email $email_i --password $password
+bash vst-install.sh --force --interactive yes $Web_Server_version --vsftpd yes --proftpd no --exim yes --dovecot yes $Spamassassin_Clamav_yn --named yes --iptables yes $fail2ban_yn --mysql yes --postgresql no $Remi_yn --quota yes --hostname $hostname_i --email $email_i --password $password
 
 
 
@@ -524,7 +530,7 @@ fi
 
 
 if [ "$vDDoS_yn" = "y" ]; then
-curl -L https://github.com/duy13/vDDoS-Protection/raw/master/vddos-1.10.2-centos7 -o /usr/bin/vddos
+curl -L https://github.com/duy13/vDDoS-Protection/raw/master/vddos-1.12.0-centos7 -o /usr/bin/vddos
 chmod 700 /usr/bin/vddos
 /usr/bin/vddos setup
 /usr/bin/vddos autostart
