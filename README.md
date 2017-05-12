@@ -8,14 +8,14 @@ VESTACP from: https://vestacp.com/#install
 
 ----------
 
-1. VDVESTA System Requirements:
+1/ VDVESTA System Requirements:
 -------------
 Install CentOS Server 7 x86_64: http://centos.org/
 
 ----------
 
 
-2. VDVESTA Install:
+2/ VDVESTA Install:
 -------------
 ```
 curl -L https://github.com/duy13/VDVESTA/raw/master/vdvesta.sh -o vdvesta.sh ; bash vdvesta.sh
@@ -108,5 +108,5 @@ vdvesta screenshot:
 ---------------
 Document: http://vdvesta.voduy.com
 ```
-Still in beta, run at own risk! This it provided without any warranty!
+Still in beta, use at your own risk! It is provided without any warranty!
 ```

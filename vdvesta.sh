@@ -156,6 +156,7 @@ fi
 Remi_yn='--remi yes'
 if [ "$PHP_Server_version" = "54" ]; then
 Remi_yn='--remi no'
+MariaDB_Server_version='5.5'
 fi
 
 
@@ -315,7 +316,12 @@ net.ipv4.conf.all.rp_filter = 1
 net.ipv4.ip_nonlocal_bind = 1' >> /etc/sysctl.conf
 
 sysctl -p
+
+
+echo   '*    soft    nofile 65535
+*    hard    nofile 65535' > /etc/security/limits.d/nofile.conf
 fi
+
 
 if [ "$change_port_yn" = "y" ]; then
 cp /usr/local/vesta/nginx/conf/nginx.conf /usr/local/vesta/nginx/conf/nginx.conf.bak.$random
