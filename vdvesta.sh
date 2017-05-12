@@ -536,7 +536,7 @@ fi
 
 
 if [ "$vDDoS_yn" = "y" ]; then
-curl -L https://github.com/duy13/vDDoS-Protection/raw/master/vddos-1.12.0-centos7 -o /usr/bin/vddos
+curl -L https://github.com/duy13/vDDoS-Protection/raw/master/vddos-1.13.0-centos7 -o /usr/bin/vddos
 chmod 700 /usr/bin/vddos
 /usr/bin/vddos setup
 /usr/bin/vddos autostart
