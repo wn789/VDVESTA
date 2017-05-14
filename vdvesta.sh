@@ -165,13 +165,7 @@ MariaDB_Server_version='5.5'
 fi
 
 if [ "$MariaDB_Server_version" = "10.0" ]; then
-echo '# MariaDB 10.0 CentOS repository list - created 2017-02-20 12:33 UTC
-# http://downloads.mariadb.org/mariadb/repositories/
-[mariadb]
-name = MariaDB
-baseurl = http://yum.mariadb.org/10.0/centos7-amd64
-gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
-gpgcheck=1' > /etc/yum.repos.d/MariaDB.repo
+MariaDB_Server_version='10.1'
 fi
 
 if [ "$MariaDB_Server_version" = "10.1" ]; then
