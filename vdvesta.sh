@@ -312,8 +312,8 @@ net.ipv4.ip_nonlocal_bind = 1' >> /etc/sysctl.conf
 sysctl -p
 
 
-echo   '*    soft    nofile 65535
-*    hard    nofile 65535' > /etc/security/limits.d/nofile.conf
+echo '*    soft    nofile 65535
+*    hard    nofile 65535' >> /etc/security/limits.d/nofile.conf
 fi
 
 
@@ -526,10 +526,14 @@ rm -rf *.pkg
 
 fi
 
-
+if [ ! -f /etc/rc.d/init.d/vesta ]; then
+	echo 'Install VESTACP Fail!';
+	exit 0
+fi
 
 
 if [ "$vDDoS_yn" = "y" ]; then
+
 curl -L https://github.com/duy13/vDDoS-Protection/raw/master/vddos-1.13.0-centos7 -o /usr/bin/vddos
 chmod 700 /usr/bin/vddos
 /usr/bin/vddos setup
@@ -571,7 +575,7 @@ env[HOSTNAME] = $HOSTNAME
 env[PATH] = /usr/local/bin:/usr/bin:/bin
 env[TMP] = /tmp
 env[TMPDIR] = /tmp
-env[TEMP] = /tmp' > /usr/local/vesta/data/templates/web/php-fpm/vDDoS-Socket.tpl
+env[TEMP] = /tmp' > /usr/local/vesta/data/templates/web/php-fpm/VDVESTA-Socket.tpl
 chkconfig httpd off >/dev/null 2>&1
 service nginx restart >/dev/null 2>&1
 nginx -v
