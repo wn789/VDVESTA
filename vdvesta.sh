@@ -309,11 +309,14 @@ net.ipv4.conf.all.accept_source_route = 0
 net.ipv4.conf.all.rp_filter = 1
 net.ipv4.ip_nonlocal_bind = 1' >> /etc/sysctl.conf
 
+touch /etc/security/limits.d/nofile.conf
+echo '*    soft    nofile 65535'> /etc/security/limits.d/nofile.conf
+echo '*    hard    nofile 65535' >> /etc/security/limits.d/nofile.conf
+
 sysctl -p
 
 
-echo '*    soft    nofile 65535
-*    hard    nofile 65535' >> /etc/security/limits.d/nofile.conf
+
 fi
 
 
