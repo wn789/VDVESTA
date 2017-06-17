@@ -233,7 +233,7 @@ yum -y install libcgroup-pam
 echo "session         optional        pam_cgroup.so" >> /etc/pam.d/su
 fi
 
-if [ "Kernel_limit_DDOS_yn" = "y" ]; then
+if [ "$Kernel_limit_DDOS_yn" = "y" ]; then
 cp /etc/sysctl.conf /etc/sysctl.conf.bak.$random
 echo 'kernel.printk = 4 4 1 7
 kernel.panic = 10
@@ -537,7 +537,7 @@ fi
 
 if [ "$vDDoS_yn" = "y" ]; then
 
-curl -L https://github.com/duy13/vDDoS-Protection/raw/master/vddos-1.13.0-centos7 -o /usr/bin/vddos
+curl -L https://github.com/duy13/vDDoS-Protection/raw/master/vddos-1.13.1-centos7 -o /usr/bin/vddos
 chmod 700 /usr/bin/vddos
 /usr/bin/vddos setup
 /usr/bin/vddos autostart
