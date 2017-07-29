@@ -31,29 +31,28 @@ vDDoS_yn=''; File_Manager_yn=''; Zend_opcode_yn=''; Memcached_yn=''; Limit_Hosti
 Kernel_limit_DDOS_yn=''; change_port_yn=''; Web_Server_version=''; PHP_Server_version='';
 auto_config_PHP_yn=''; MariaDB_Server_version=''; Spamassassin_Clamav_yn=''; fail2ban_yn='';
 
-echo -n '你是否要安装vDDoS代理保护 [Y|n]: '
+echo -n '是否要安装vDDoS代理保护 [Y|n]: '
 read vDDoS_yn
 if [ "$vDDoS_yn" != "y" ] && [ "$vDDoS_yn" != "n" ]; then
 vDDoS_yn=y
 fi
-echo '
-echo -n '安装vDDoS代理保护 => '$vDDoS_yn''
+echo '安装vDDoS代理保护 => '$vDDoS_yn''
 
-echo -n '选择要安装的Web服务器版本 [apache|nginx]: '
+echo -n '选择要安装的Web Server版本 [apache|nginx]: '
 read Web_Server_version
 if [ "$Web_Server_version" != "apache" ] && [ "$Web_Server_version" != "nginx" ]; then
 Web_Server_version=apache
 fi
-echo 'Web服务器版本 => '$Web_Server_version''
+echo '你选择安装的Web Server版本为 => '$Web_Server_version''
 
 echo -n '选择要安装的PHP Server版本 [5.4|5.5|5.6|7.0|7.1]: '
 read PHP_Server_version
 if [ "$PHP_Server_version" != "5.4" ] && [ "$PHP_Server_version" != "5.5" ] && [ "$PHP_Server_version" != "5.6" ] && [ "$PHP_Server_version" != "7.0" ] && [ "$PHP_Server_version" != "7.1" ]; then
 PHP_Server_version=7.1
 fi
-echo 'PHP Server版本 => '$PHP_Server_version''
+echo '你选择安装的PHP Server版本为 => '$PHP_Server_version''
 
-echo -n '是否要自动配置PHP[Y|n]: '
+echo -n '是否要自动配置PHP [Y|n]: '
 read auto_config_PHP_yn
 if [ "$auto_config_PHP_yn" != "y" ] && [ "$auto_config_PHP_yn" != "n" ]; then
 auto_config_PHP_yn=y
@@ -65,7 +64,7 @@ read MariaDB_Server_version
 if [ "$MariaDB_Server_version" != "5.5" ] && [ "$MariaDB_Server_version" != "10.0" ] && [ "$MariaDB_Server_version" != "10.1" ]; then
 MariaDB_Server_version=10.1
 fi
-echo 'MariaDB Server版本 => '$MariaDB_Server_version''
+echo '你选择安装的MariaDB Server版本为 => '$MariaDB_Server_version''
 
 echo -n '是否要安装文件管理器 [Y|n]: '
 read File_Manager_yn
@@ -74,7 +73,7 @@ File_Manager_yn=y
 fi
 echo '安装文件管理器 => '$File_Manager_yn''
 
-echo -n '是否选择安装Zend优化加操作码缓存[Y|n]: '
+echo -n '是否选择安装Zend优化加操作码缓存 [Y|n]: '
 read Zend_opcode_yn
 if [ "$Zend_opcode_yn" != "y" ] && [ "$Zend_opcode_yn" != "n" ]; then
 Zend_opcode_yn=y
@@ -112,12 +111,12 @@ echo 'VestaCP 8083端口更改为2083 => '$change_port_yn''
 
 
 
-echo -n '是否选择安装Spamassassin＆Clamav [y|N]: '
+echo -n '是否选择安装Spamassassin & Clamav [y|N]: '
 read Spamassassin_Clamav_yn
 if [ "$Spamassassin_Clamav_yn" != "y" ] && [ "$Spamassassin_Clamav_yn" != "Y" ]; then
 Spamassassin_Clamav_yn=n
 fi
-echo '安装Spamassassin＆Clamav => '$Spamassassin_Clamav_yn''
+echo '安装Spamassassin & Clamav => '$Spamassassin_Clamav_yn''
 
 echo -n '是否选择安装Fail2ban [y|N]: '
 read fail2ban_yn
@@ -127,19 +126,19 @@ fi
 echo '安装Fail2ban => '$fail2ban_yn''
 
 hostname_set="vdvesta.`hostname -f`.local"
-echo -n '输入你的主机名 ['$hostname_set']: '
+echo -n '输入你的主机名，请按回车键 ['$hostname_set']: '
 read hostname_i
 if [ "$hostname_i" = "" ]; then
 hostname_i=$hostname_set
 fi
-echo '你输入的主机名为 => '$hostname_i''
+echo '你的主机名 => '$hostname_i''
 
-echo -n '输入您的邮箱 [admin@'$hostname_i']: '
+echo -n '输入你的邮箱，请按回车键 [admin@'$hostname_i']: '
 read email_i
 if [ "$email_i" = "" ]; then
 email_i='admin@'$hostname_i''
 fi
-echo '你输入的邮箱为 => '$email_i''
+echo '你的邮箱 => '$email_i''
 
 yum -y install nano screen wget curl zip unzip net-tools >/dev/null 2>&1
 yum -y remove httpd* php* mysql* >/dev/null 2>&1
@@ -591,9 +590,9 @@ php -v
 
 echo '
 =====> 安装和配置vdvesta完成! <=====
- Link VestaCP: https://'$IP':2083 or https://'$IP':8083
-	username: admin
-	password: '$password'
+ 你的VestaCP地址: https://'$IP':2083 or https://'$IP':8083
+	控制面板用户名: admin
+	控制面板密码: '$password'
 
- Please reboot!
+ 请重新启动服务器!
 '
