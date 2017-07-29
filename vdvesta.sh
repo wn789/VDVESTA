@@ -1,4 +1,6 @@
 #!/bin/bash
+########################     蜗牛汉化     #################################
+########################  www.wn789.com   #################################
 
 
 if [ $(id -u) != "0" ]; then
@@ -27,16 +29,10 @@ echo '	欢迎使用VDVESTA:
 								谢谢你的使用!
 '
 
-vDDoS_yn=''; File_Manager_yn=''; Zend_opcode_yn=''; Memcached_yn=''; Limit_Hosting_yn='';
-Kernel_limit_DDOS_yn=''; change_port_yn=''; Web_Server_version=''; PHP_Server_version='';
+File_Manager_yn=''; Zend_opcode_yn=''; Memcached_yn=''; Limit_Hosting_yn='';
+change_port_yn=''; Web_Server_version=''; PHP_Server_version='';
 auto_config_PHP_yn=''; MariaDB_Server_version=''; Spamassassin_Clamav_yn=''; fail2ban_yn='';
 
-echo -n '是否要安装vDDoS代理保护 [Y|n]: '
-read vDDoS_yn
-if [ "$vDDoS_yn" != "y" ] && [ "$vDDoS_yn" != "n" ]; then
-vDDoS_yn=y
-fi
-echo '安装vDDoS代理保护 => '$vDDoS_yn''
 
 echo -n '选择要安装的Web Server版本 [apache|nginx]: '
 read Web_Server_version
@@ -95,12 +91,6 @@ Limit_Hosting_yn=y
 fi
 echo '安装限制主机 => '$Limit_Hosting_yn''
 
-echo -n '是否选择配置内核限制DDOS [Y|n]: '
-read Kernel_limit_DDOS_yn
-if [ "$Kernel_limit_DDOS_yn" != "y" ] && [ "$Kernel_limit_DDOS_yn" != "n" ]; then
-Kernel_limit_DDOS_yn=y
-fi
-echo '配置内核限制DDOS => '$Kernel_limit_DDOS_yn''
 
 echo -n '是否将VestaCP 8083端口更改为2083 [Y|n]: '
 read change_port_yn
@@ -533,19 +523,6 @@ if [ ! -f /etc/rc.d/init.d/vesta ]; then
 	echo 'Install VESTACP Fail!';
 	exit 0
 fi
-
-
-if [ "$vDDoS_yn" = "y" ]; then
-
-curl -L https://github.com/duy13/vDDoS-Protection/raw/master/vddos-1.13.2-centos7 -o /usr/bin/vddos
-chmod 700 /usr/bin/vddos
-/usr/bin/vddos setup
-/usr/bin/vddos autostart
-echo 'default http://0.0.0.0:80    http://'$IP':8080    no    no    no           no
-default https://0.0.0.0:443  https://'$IP':8443  no    no    /vddos/ssl/your-domain.com.pri /vddos/ssl/your-domain.com.crt' >> /vddos/conf.d/website.conf
-fi
-
-
 
 
 /usr/bin/vddos restart >/dev/null 2>&1
