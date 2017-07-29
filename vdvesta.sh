@@ -15,130 +15,131 @@ random=`cat /dev/urandom | tr -cd 'A-Z0-9' | head -c 5`
 password=`cat /dev/urandom | tr -cd 'A-Z0-9' | head -c 10`
 IP=`curl -s -L http://cpanel.net/showip.cgi`
 if [ ! -f /etc/redhat-release ] || [ "$os" != "CentOS" ] || [ "$release" != "7" ]; then
-echo 'ERROR! Please use CentOS Linux release 7 x86_64!
+echo '错误!请使用CentOS 7 x86_64系统!
 '
 exit 0
 fi
 
 clear
 ############################################################
-echo '	Welcome to VDVESTA:
-A shell script auto Custom & Install VESTACP for your CentOS Server Release 7 x86_64.
-								Thanks you for using!
+echo '	欢迎使用VDVESTA:
+一键自动为CentOS 7 x86_64系统安装VESTACP.由蜗牛789—www.wn789.com汉化修改！
+								谢谢你的使用!
 '
 
 vDDoS_yn=''; File_Manager_yn=''; Zend_opcode_yn=''; Memcached_yn=''; Limit_Hosting_yn='';
 Kernel_limit_DDOS_yn=''; change_port_yn=''; Web_Server_version=''; PHP_Server_version='';
 auto_config_PHP_yn=''; MariaDB_Server_version=''; Spamassassin_Clamav_yn=''; fail2ban_yn='';
 
-echo -n 'Would you like +install vDDoS Proxy Protection [Y|n]: '
+echo -n '你是否要安装vDDoS代理保护 [Y|n]: '
 read vDDoS_yn
 if [ "$vDDoS_yn" != "y" ] && [ "$vDDoS_yn" != "n" ]; then
 vDDoS_yn=y
 fi
-echo 'vDDoS Proxy Protection install => '$vDDoS_yn''
+echo '
+echo -n '安装vDDoS代理保护 => '$vDDoS_yn''
 
-echo -n 'Which Web Server version you want to install [apache|nginx]: '
+echo -n '选择要安装的Web服务器版本 [apache|nginx]: '
 read Web_Server_version
 if [ "$Web_Server_version" != "apache" ] && [ "$Web_Server_version" != "nginx" ]; then
 Web_Server_version=apache
 fi
-echo 'Web Server version => '$Web_Server_version''
+echo 'Web服务器版本 => '$Web_Server_version''
 
-echo -n 'Which PHP Server version you want to install [5.4|5.5|5.6|7.0|7.1]: '
+echo -n '选择要安装的PHP Server版本 [5.4|5.5|5.6|7.0|7.1]: '
 read PHP_Server_version
 if [ "$PHP_Server_version" != "5.4" ] && [ "$PHP_Server_version" != "5.5" ] && [ "$PHP_Server_version" != "5.6" ] && [ "$PHP_Server_version" != "7.0" ] && [ "$PHP_Server_version" != "7.1" ]; then
 PHP_Server_version=7.1
 fi
-echo 'PHP Server version => '$PHP_Server_version''
+echo 'PHP Server版本 => '$PHP_Server_version''
 
-echo -n 'Would you like auto config PHP [Y|n]: '
+echo -n '是否要自动配置PHP[Y|n]: '
 read auto_config_PHP_yn
 if [ "$auto_config_PHP_yn" != "y" ] && [ "$auto_config_PHP_yn" != "n" ]; then
 auto_config_PHP_yn=y
 fi
-echo 'Auto config PHP => '$auto_config_PHP_yn''
+echo '自动配置PHP => '$auto_config_PHP_yn''
 
-echo -n 'Which MariaDB Server version you want to install [5.5|10.0|10.1]: '
+echo -n '选择要安装的MariaDB Server版本 [5.5|10.0|10.1]: '
 read MariaDB_Server_version
 if [ "$MariaDB_Server_version" != "5.5" ] && [ "$MariaDB_Server_version" != "10.0" ] && [ "$MariaDB_Server_version" != "10.1" ]; then
 MariaDB_Server_version=10.1
 fi
-echo 'MariaDB Server version => '$MariaDB_Server_version''
+echo 'MariaDB Server版本 => '$MariaDB_Server_version''
 
-echo -n 'Would you like +install File Manager [Y|n]: '
+echo -n '是否要安装文件管理器 [Y|n]: '
 read File_Manager_yn
 if [ "$File_Manager_yn" != "y" ] && [ "$File_Manager_yn" != "n" ]; then
 File_Manager_yn=y
 fi
-echo 'File Manager install => '$File_Manager_yn''
+echo '安装文件管理器 => '$File_Manager_yn''
 
-echo -n 'Would you like +install Zend optimize plus opcode cache [Y|n]: '
+echo -n '是否选择安装Zend优化加操作码缓存[Y|n]: '
 read Zend_opcode_yn
 if [ "$Zend_opcode_yn" != "y" ] && [ "$Zend_opcode_yn" != "n" ]; then
 Zend_opcode_yn=y
 fi
-echo 'Zend Opcode Cache install => '$Zend_opcode_yn''
+echo '安装Zend => '$Zend_opcode_yn''
 
 
-echo -n 'Would you like +install Memcached [Y|n]: '
+echo -n '是否选择安装安装Memcached [Y|n]: '
 read Memcached_yn
 if [ "$Memcached_yn" != "y" ] && [ "$Memcached_yn" != "n" ]; then
 Memcached_yn=y
 fi
-echo 'Memcached install => '$Memcached_yn''
+echo '安装Memcached => '$Memcached_yn''
 
-echo -n 'Would you like +install Limit Hosting (limit CPU, RAM, IO your hosting account) [Y|n]: '
+echo -n '是否选择安装限制主机（限制CPU，RAM，IO您的主机帐户） [Y|n]: '
 read Limit_Hosting_yn
 if [ "$Limit_Hosting_yn" != "y" ] && [ "$Limit_Hosting_yn" != "n" ]; then
 Limit_Hosting_yn=y
 fi
-echo 'Limit Hosting install => '$Limit_Hosting_yn''
+echo '安装限制主机 => '$Limit_Hosting_yn''
 
-echo -n 'Would you like Configure Kernel limit DDOS [Y|n]: '
+echo -n '是否选择配置内核限制DDOS [Y|n]: '
 read Kernel_limit_DDOS_yn
 if [ "$Kernel_limit_DDOS_yn" != "y" ] && [ "$Kernel_limit_DDOS_yn" != "n" ]; then
 Kernel_limit_DDOS_yn=y
 fi
-echo 'Kernel limit DDOS => '$Kernel_limit_DDOS_yn''
+echo '配置内核限制DDOS => '$Kernel_limit_DDOS_yn''
 
-echo -n 'Would you like change port VestaCP 8083 to 2083 [Y|n]: '
+echo -n '是否将VestaCP 8083端口更改为2083 [Y|n]: '
 read change_port_yn
 if [ "$change_port_yn" != "y" ] && [ "$change_port_yn" != "n" ]; then
 change_port_yn=y
 fi
-echo 'Change port VestaCP 8083 to 2083 => '$change_port_yn''
+echo 'VestaCP 8083端口更改为2083 => '$change_port_yn''
 
 
 
-echo -n 'Would you like +install Spamassassin & Clamav [y|N]: '
+echo -n '是否选择安装Spamassassin＆Clamav [y|N]: '
 read Spamassassin_Clamav_yn
 if [ "$Spamassassin_Clamav_yn" != "y" ] && [ "$Spamassassin_Clamav_yn" != "Y" ]; then
 Spamassassin_Clamav_yn=n
 fi
-echo 'Install Spamassassin & Clamav => '$Spamassassin_Clamav_yn''
+echo '安装Spamassassin＆Clamav => '$Spamassassin_Clamav_yn''
 
-echo -n 'Would you like +install Fail2ban [y|N]: '
+echo -n '是否选择安装Fail2ban [y|N]: '
 read fail2ban_yn
 if [ "$fail2ban_yn" != "y" ] && [ "$fail2ban_yn" != "Y" ]; then
 fail2ban_yn=n
 fi
-echo 'Install Fail2ban => '$fail2ban_yn''
+echo '安装Fail2ban => '$fail2ban_yn''
 
 hostname_set="vdvesta.`hostname -f`.local"
-echo -n 'Enter your hostname ['$hostname_set']: '
+echo -n '输入你的主机名 ['$hostname_set']: '
 read hostname_i
 if [ "$hostname_i" = "" ]; then
 hostname_i=$hostname_set
 fi
-echo 'Hostname => '$hostname_i''
+echo '你输入的主机名为 => '$hostname_i''
 
-echo -n 'Enter your Email [admin@'$hostname_i']: '
+echo -n '输入您的邮箱 [admin@'$hostname_i']: '
 read email_i
 if [ "$email_i" = "" ]; then
 email_i='admin@'$hostname_i''
 fi
-echo 'Email => '$email_i''
+echo '你输入的邮箱为 => '$email_i''
 
 yum -y install nano screen wget curl zip unzip net-tools >/dev/null 2>&1
 yum -y remove httpd* php* mysql* >/dev/null 2>&1
@@ -182,7 +183,7 @@ fi
 
 ############################################################
 
-curl -L https://github.com/duy13/VDVESTA/raw/master/vst-install.sh -o vst-install.sh
+curl -L https://raw.githubusercontent.com/wn789/VDVESTA/master/vst-install.sh -o vst-install.sh
 chmod 700 vst-install.sh
 
 
@@ -375,7 +376,7 @@ source /usr/local/vesta/conf/vesta.conf >/dev/null 2>&1
 fi
 
 if [ "$File_Manager_yn" = "y" ]; then
-curl -L https://github.com/duy13/VDVESTA/raw/master/File-Manager -o File-Manager
+curl -L https://raw.githubusercontent.com/wn789/VDVESTA/master/File-Manager -o File-Manager
 chmod 700 File-Manager
 ./File-Manager
 rm -f File-Manager
@@ -589,7 +590,7 @@ mysql -V
 php -v
 
 echo '
-=====> Install and Config VDVESTA Done! <=====
+=====> 安装和配置vdvesta完成! <=====
  Link VestaCP: https://'$IP':2083 or https://'$IP':8083
 	username: admin
 	password: '$password'
