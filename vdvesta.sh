@@ -29,8 +29,8 @@ echo '	欢迎使用VDVESTA:
 								谢谢你的使用!
 '
 
-File_Manager_yn=''; Zend_opcode_yn=''; Memcached_yn=''; Limit_Hosting_yn='';
-change_port_yn=''; Web_Server_version=''; PHP_Server_version='';
+vDDoS_yn=''; File_Manager_yn=''; Zend_opcode_yn=''; Memcached_yn=''; Limit_Hosting_yn='';
+Kernel_limit_DDOS_yn=''; change_port_yn=''; Web_Server_version=''; PHP_Server_version='';
 auto_config_PHP_yn=''; MariaDB_Server_version=''; Spamassassin_Clamav_yn=''; fail2ban_yn='';
 
 
@@ -39,9 +39,9 @@ read Web_Server_version
 if [ "$Web_Server_version" != "apache" ] && [ "$Web_Server_version" != "nginx" ]; then
 Web_Server_version=apache
 fi
-echo '你选择安装的Web Server版本为 => '$Web_Server_version''
+echo '选择要安装的PHP Server版本 => '$Web_Server_version''
 
-echo -n '选择要安装的PHP Server版本 [5.4|5.5|5.6|7.0|7.1]: '
+echo -n 'Which PHP Server version you want to install [5.4|5.5|5.6|7.0|7.1]: '
 read PHP_Server_version
 if [ "$PHP_Server_version" != "5.4" ] && [ "$PHP_Server_version" != "5.5" ] && [ "$PHP_Server_version" != "5.6" ] && [ "$PHP_Server_version" != "7.0" ] && [ "$PHP_Server_version" != "7.1" ]; then
 PHP_Server_version=7.1
@@ -69,7 +69,7 @@ File_Manager_yn=y
 fi
 echo '安装文件管理器 => '$File_Manager_yn''
 
-echo -n '是否选择安装Zend优化加操作码缓存 [Y|n]: '
+echo -n 'W是否选择安装Zend优化加操作码缓存 [Y|n]: '
 read Zend_opcode_yn
 if [ "$Zend_opcode_yn" != "y" ] && [ "$Zend_opcode_yn" != "n" ]; then
 Zend_opcode_yn=y
@@ -91,7 +91,6 @@ Limit_Hosting_yn=y
 fi
 echo '安装限制主机 => '$Limit_Hosting_yn''
 
-
 echo -n '是否将VestaCP 8083端口更改为2083 [Y|n]: '
 read change_port_yn
 if [ "$change_port_yn" != "y" ] && [ "$change_port_yn" != "n" ]; then
@@ -108,7 +107,7 @@ Spamassassin_Clamav_yn=n
 fi
 echo '安装Spamassassin & Clamav => '$Spamassassin_Clamav_yn''
 
-echo -n '是否选择安装Fail2ban [y|N]: '
+echo -n 'W是否选择安装Fail2ban [y|N]: '
 read fail2ban_yn
 if [ "$fail2ban_yn" != "y" ] && [ "$fail2ban_yn" != "Y" ]; then
 fail2ban_yn=n
@@ -116,7 +115,7 @@ fi
 echo '安装Fail2ban => '$fail2ban_yn''
 
 hostname_set="vdvesta.`hostname -f`.local"
-echo -n '输入你的主机名，请按回车键 ['$hostname_set']: '
+echo -n '输入你的主机名，请按回车键  ['$hostname_set']: '
 read hostname_i
 if [ "$hostname_i" = "" ]; then
 hostname_i=$hostname_set
@@ -128,7 +127,7 @@ read email_i
 if [ "$email_i" = "" ]; then
 email_i='admin@'$hostname_i''
 fi
-echo '你的邮箱 => '$email_i''
+echo 'E你的邮箱 => '$email_i''
 
 yum -y install nano screen wget curl zip unzip net-tools >/dev/null 2>&1
 yum -y remove httpd* php* mysql* >/dev/null 2>&1
@@ -365,7 +364,7 @@ source /usr/local/vesta/conf/vesta.conf >/dev/null 2>&1
 fi
 
 if [ "$File_Manager_yn" = "y" ]; then
-curl -L https://raw.githubusercontent.com/wn789/VDVESTA/master/File-Manager -o File-Manager
+curl -L https://github.com/duy13/VDVESTA/raw/master/File-Manager -o File-Manager
 chmod 700 File-Manager
 ./File-Manager
 rm -f File-Manager
@@ -525,6 +524,19 @@ if [ ! -f /etc/rc.d/init.d/vesta ]; then
 fi
 
 
+if [ "$vDDoS_yn" = "y" ]; then
+
+curl -L https://github.com/duy13/vDDoS-Protection/raw/master/vddos-1.13.3-centos7 -o /usr/bin/vddos
+chmod 700 /usr/bin/vddos
+/usr/bin/vddos setup
+/usr/bin/vddos autostart
+echo 'default http://0.0.0.0:80    http://'$IP':8080    no    no    no           no
+default https://0.0.0.0:443  https://'$IP':8443  no    no    /vddos/ssl/your-domain.com.pri /vddos/ssl/your-domain.com.crt' >> /vddos/conf.d/website.conf
+fi
+
+
+
+
 /usr/bin/vddos restart >/dev/null 2>&1
 service mariadb restart >/dev/null 2>&1
 service memcached restart >/dev/null 2>&1
@@ -567,9 +579,9 @@ php -v
 
 echo '
 =====> 安装和配置vdvesta完成! <=====
- 你的VestaCP地址: https://'$IP':2083 or https://'$IP':8083
+你的VestaCP地址: https://'$IP':2083 or https://'$IP':8083
 	控制面板用户名: admin
 	控制面板密码: '$password'
 
- 请重新启动服务器!
+  请重新启动服务器!
 '
